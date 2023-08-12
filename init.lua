@@ -105,6 +105,11 @@ require("catppuccin").setup({ flavour = "macchiato" })
 vim.cmd.colorscheme "catppuccin"
 
 require("indent_blankline").setup()
+
+require('lspconfig.ui.windows').default_options.border = "rounded" -- lsp info borders
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with( -- help window border
+  vim.lsp.handlers.hover, { border = "rounded" }
+)
 -- }}}
 
 -- NvimTree {{{
@@ -173,7 +178,11 @@ cmp.setup.cmdline(":", {
   })
 })
 
-require("mason").setup()
+require("mason").setup({
+  ui = {
+    border = "rounded",
+  },
+})
 require("mason-lspconfig").setup({
   ensure_installed = language_servers
 })
@@ -218,11 +227,15 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true })
 -- Terminal Bindings {{{
 vim.keymap.set(
   "n",
-  "<F7>",
+  "<C-/>",
   "<CMD>FloatermToggle<CR><CMD>FloatermUpdate --title=Terminal --titleposition=center --width=0.8 --height=0.8<CR>",
   { noremap = true }
 )
-vim.keymap.set("t", "<F7>", "<ESC><CMD>FloatermToggle<CR>", { noremap = true } )
+vim.keymap.set("t", "<C-/>", "<ESC><CMD>FloatermToggle<CR>", { noremap = true } )
+-- }}}
+
+-- Miscellaneous Bindings {{{
+vim.keymap.set("n", "K", "<CMD>lua vim.lsp.buf.hover()<CR>", { noremap = true })
 -- }}}
 
 local wk = require("which-key")
@@ -232,7 +245,6 @@ wk.register({
     name = "lsp",
     f = { "<CMD>lua vim.lsp.buf.format()<CR>", "format" },
     a = { "<CMD>lua vim.lsp.buf.code_action()<CR>", "code action" },
-    h = { "<CMD>lua vim.lsp.buf.hover()<CR>", "symbol help" },
   },
   t = {
     name = "toggle",
