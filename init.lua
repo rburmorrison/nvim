@@ -77,6 +77,12 @@ require("lazy").setup({
   { "neovim/nvim-lspconfig" },
   -- }}}
 
+  -- Miscellaneous {{{
+  { "windwp/nvim-autopairs", event = "InsertEnter", opts = {} },
+  { "tpope/vim-sleuth" },
+  { "voldikss/vim-floaterm" },
+  -- }}}
+
   -- Key Bindings {{{
   {
     "folke/which-key.nvim",
@@ -86,11 +92,6 @@ require("lazy").setup({
       vim.o.timeoutlen = 300
     end,
   },
-  -- }}}
-
-  -- Miscellaneous {{{
-  { "windwp/nvim-autopairs", event = "InsertEnter", opts = {} },
-  { "tpope/vim-sleuth" },
   -- }}}
 
 })
@@ -197,6 +198,33 @@ require("lspconfig").rust_analyzer.setup({
 -- }}}
 
 -- Key Bindings {{{
+vim.keymap.set("t", "<Esc>", "<C-\\><C-n>", { noremap = true })
+
+-- CTRL+HJKL Movement {{{
+vim.keymap.set("t", "<C-h>", "<C-\\><C-N><C-w>h", { noremap = true })
+vim.keymap.set("t", "<C-j>", "<C-\\><C-N><C-w>j", { noremap = true })
+vim.keymap.set("t", "<C-k>", "<C-\\><C-N><C-w>k", { noremap = true })
+vim.keymap.set("t", "<C-l>", "<C-\\><C-N><C-w>l", { noremap = true })
+vim.keymap.set("t", "<C-h>", "<C-\\><C-N><C-w>h", { noremap = true })
+vim.keymap.set("t", "<C-j>", "<C-\\><C-N><C-w>j", { noremap = true })
+vim.keymap.set("t", "<C-k>", "<C-\\><C-N><C-w>k", { noremap = true })
+vim.keymap.set("t", "<C-l>", "<C-\\><C-N><C-w>l", { noremap = true })
+vim.keymap.set("n", "<C-h>", "<C-w>h", { noremap = true })
+vim.keymap.set("n", "<C-j>", "<C-w>j", { noremap = true })
+vim.keymap.set("n", "<C-k>", "<C-w>k", { noremap = true })
+vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true })
+-- }}}
+
+-- Terminal Bindings {{{
+vim.keymap.set(
+  "n",
+  "<F7>",
+  "<CMD>FloatermToggle<CR><CMD>FloatermUpdate --title=Terminal --titleposition=center --width=0.8 --height=0.8<CR>",
+  { noremap = true }
+)
+vim.keymap.set("t", "<F7>", "<ESC><CMD>FloatermToggle<CR>", { noremap = true } )
+-- }}}
+
 local wk = require("which-key")
 wk.register({
   e = { "<CMD>NvimTreeToggle<CR>", "toggle file explorer" },
@@ -206,5 +234,9 @@ wk.register({
     a = { "<CMD>lua vim.lsp.buf.code_action()<CR>", "code action" },
     h = { "<CMD>lua vim.lsp.buf.hover()<CR>", "symbol help" },
   },
+  t = {
+    name = "toggle",
+    t = { "<CMD>FloatermToggle Terminal<CR>", "toggle terminal" },
+  }
 }, { prefix = "<LEADER>" })
 -- }}}
