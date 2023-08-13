@@ -35,12 +35,26 @@ vim.opt_local.colorcolumn = "81"
 
 local language_servers = {
   "lua_ls",
-  "rust_analyzer"
+  "rust_analyzer",
+  "taplo",
+  "neocmake",
+  "clangd",
+  "ruff_lsp",
+}
+
+local null_ls_sources = {
+  "mypy",
+  "black",
 }
 
 local treesitter_languages = {
   "lua",
-  "rust"
+  "rust",
+  "c",
+  "cpp",
+  "toml",
+  "cmake",
+  "python",
 }
 
 ----------------------------
@@ -52,6 +66,7 @@ require("lazy").setup({
   -- Aesthetics {{{
   { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
   { "lukas-reineke/indent-blankline.nvim" },
+  { "nvim-lualine/lualine.nvim", dependencies = { "nvim-tree/nvim-web-devicons" } },
   -- }}}
 
   -- NvimTree {{{
@@ -75,6 +90,11 @@ require("lazy").setup({
   { "williamboman/mason.nvim" },
   { "williamboman/mason-lspconfig.nvim" },
   { "neovim/nvim-lspconfig" },
+  -- }}}
+
+  -- Linting and Formatting {{{
+  { "jose-elias-alvarez/null-ls.nvim" },
+  { "jay-babu/mason-null-ls.nvim", dependencies = { "nvim-lua/plenary.nvim" } },
   -- }}}
 
   -- Miscellaneous {{{
@@ -106,6 +126,8 @@ vim.cmd.colorscheme "catppuccin"
 
 require("indent_blankline").setup()
 
+require("lualine").setup()
+
 require('lspconfig.ui.windows').default_options.border = "rounded" -- lsp info borders
 vim.lsp.handlers["textDocument/hover"] = vim.lsp.with( -- help window border
   vim.lsp.handlers.hover, { border = "rounded" }
@@ -136,8 +158,8 @@ cmp.setup({
     end,
   },
   window = {
-    -- completion = cmp.config.window.bordered(),
-    -- documentation = cmp.config.window.bordered(),
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
   },
   mapping = cmp.mapping.preset.insert({
     ["<C-b>"] = cmp.mapping.scroll_docs(-4),
@@ -204,6 +226,16 @@ require("lspconfig").rust_analyzer.setup({
     }
   }
 })
+-- }}}
+
+-- Linting and Formatting {{{
+require("mason-null-ls").setup({
+  handlers = {},
+  ensure_installed = null_ls_sources,
+})
+
+local null_ls = require("null-ls")
+null_ls.setup()
 -- }}}
 
 -- Key Bindings {{{
