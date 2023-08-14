@@ -22,12 +22,12 @@ vim.opt.rtp:prepend(lazypath)
 vim.g.mapleader      = " "
 vim.g.maplocalleader = " "
 
-vim.opt_local.shiftwidth = 2
-vim.opt_local.tabstop    = 2
-vim.opt_local.expandtab  = true
+vim.opt.shiftwidth = 2
+vim.opt.tabstop    = 2
+vim.opt.expandtab  = true
 
-vim.opt_local.number      = true
-vim.opt_local.colorcolumn = "81"
+vim.opt.number      = true
+vim.opt.colorcolumn = "81"
 
 --------------------------------------
 -- LSP and Treesitter Configuration --
@@ -138,7 +138,26 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with( -- help window border
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
-require("nvim-tree").setup()
+
+local function my_on_attach(bufnr)
+  local api = require "nvim-tree.api"
+
+  local function opts(desc)
+    return { desc = "nvim-tree: " .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+  end
+
+  -- default mappings
+  api.config.mappings.default_on_attach(bufnr)
+
+  -- custom mappings
+  vim.keymap.set('n', 's', api.node.open.horizontal, opts('Open: Horizontal Split'))
+  vim.keymap.set('n', 'v', api.node.open.vertical,   opts('Open: Vertical Split'))
+  vim.keymap.set('n', '?', api.tree.toggle_help,     opts('Help'))
+end
+
+require("nvim-tree").setup {
+  on_attach = my_on_attach,
+}
 -- }}}
 
 -- Treesitter {{{
