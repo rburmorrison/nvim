@@ -39,6 +39,7 @@ local language_servers = {
   "neocmake",
   "clangd",
   "ruff_lsp",
+  "pylsp",
 }
 
 local null_ls_sources = {
@@ -305,6 +306,7 @@ wk.register({
     name = "lsp",
     f = { "<CMD>lua vim.lsp.buf.format()<CR>", "format" },
     a = { "<CMD>lua vim.lsp.buf.code_action()<CR>", "code action" },
+    r = { "<CMD>lua vim.lsp.buf.rename()<CR>", "rename symbol" },
   },
 }, { prefix = "<LEADER>" })
 -- }}}
