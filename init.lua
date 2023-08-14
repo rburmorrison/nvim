@@ -45,6 +45,7 @@ local language_servers = {
 local null_ls_sources = {
   "mypy",
   "black",
+  "shellcheck",
 }
 
 local treesitter_languages = {
