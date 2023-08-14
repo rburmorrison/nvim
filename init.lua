@@ -18,7 +18,6 @@ vim.opt.rtp:prepend(lazypath)
 ----------------------
 -- Default Settings --
 ----------------------
-
 vim.g.mapleader      = " "
 vim.g.maplocalleader = " "
 
@@ -98,9 +97,19 @@ require("lazy").setup({
   -- }}}
 
   -- Miscellaneous {{{
+
+  -- Automatic pair generation
   { "windwp/nvim-autopairs", event = "InsertEnter", opts = {} },
+
+  -- Indent size detection
   { "tpope/vim-sleuth" },
+
+  -- Floating terminal
   { "voldikss/vim-floaterm" },
+
+  -- Justfile highlighting
+  { "NoahTheDuke/vim-just" },
+
   -- }}}
 
   -- Key Bindings {{{
@@ -278,11 +287,11 @@ vim.keymap.set("n", "<C-l>", "<C-w>l", { noremap = true })
 -- Terminal Bindings {{{
 vim.keymap.set(
   "n",
-  "<C-/>",
+  "<F10>",
   "<CMD>FloatermToggle<CR><CMD>FloatermUpdate --title=Terminal --titleposition=center --width=0.8 --height=0.8<CR>",
   { noremap = true }
 )
-vim.keymap.set("t", "<C-/>", "<ESC><CMD>FloatermToggle<CR>", { noremap = true } )
+vim.keymap.set("t", "<F10>", "<ESC><CMD>FloatermToggle<CR>", { noremap = true } )
 -- }}}
 
 -- Miscellaneous Bindings {{{
@@ -297,9 +306,5 @@ wk.register({
     f = { "<CMD>lua vim.lsp.buf.format()<CR>", "format" },
     a = { "<CMD>lua vim.lsp.buf.code_action()<CR>", "code action" },
   },
-  t = {
-    name = "toggle",
-    t = { "<CMD>FloatermToggle Terminal<CR>", "toggle terminal" },
-  }
 }, { prefix = "<LEADER>" })
 -- }}}
